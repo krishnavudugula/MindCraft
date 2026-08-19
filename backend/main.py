@@ -34,12 +34,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize Groq client
-# The user must provide GROQ_API_KEY in their environment
+groq_error = ""
 try:
     groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", "mock_key"))
 except Exception as e:
     groq_client = None
+    groq_error = str(e)
 
 from typing import Optional
 
@@ -61,7 +61,7 @@ async def generate_topic(req: GenerateRequest):
         return {
             "status": "success", 
             "data": {
-                "title": f"DEBUG: Key length is {len(actual_key)}, Client exists: {bool(groq_client)}",
+                "title": f"DEBUG: Error: {groq_error}",
                 "type": "Concept",
                 "category": "Psychology",
                 "difficulty": req.difficulty,
