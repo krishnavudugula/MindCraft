@@ -34,12 +34,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-groq_error = ""
+# Initialize Groq client
+# The user must provide GROQ_API_KEY in their environment
 try:
     groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", "mock_key"))
 except Exception as e:
     groq_client = None
-    groq_error = str(e)
 
 from typing import Optional
 
@@ -55,13 +55,11 @@ class EvaluateRequest(BaseModel):
 @app.post("/api/generate")
 async def generate_topic(req: GenerateRequest):
     if not groq_client or groq_client.api_key == "mock_key":
-        import os
-        actual_key = os.environ.get("GROQ_API_KEY", "")
         # Fallback to mock if no key
         return {
             "status": "success", 
             "data": {
-                "title": f"DEBUG: Error: {groq_error}",
+                "title": f"[{req.type.upper()} - {req.mode}] Why do favors change how we feel about people?",
                 "type": "Concept",
                 "category": "Psychology",
                 "difficulty": req.difficulty,
