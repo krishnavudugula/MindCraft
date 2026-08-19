@@ -334,7 +334,11 @@ async function doSpin() {
   const totalFastCycles = 25;
   const totalSlowCycles = 12;
 
-  const shuffled = [...dummyTopics].sort(() => Math.random() - 0.5);
+  const shuffled = [...dummyTopics];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
 
   await new Promise(resolve => {
     function cycle() {

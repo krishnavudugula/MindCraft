@@ -11,7 +11,8 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from groq import Groq
 
-load_dotenv()  # Reads .env file automatically
+ENV_PATH = Path(__file__).resolve().parent / ".env"
+load_dotenv(dotenv_path=ENV_PATH)  # Reads .env file correctly from backend folder
 
 app = FastAPI(title="MindCraft API")
 
@@ -141,7 +142,7 @@ You must return a raw JSON object (and nothing else) with exactly these fields:
         raise HTTPException(status_code=500, detail=str(e))
 
 # Catch-all: serve frontend files by name (style.css, app.js, etc.)
-@app.get("/{filename}")
+@app.get("/{filename:path}")
 async def serve_file(filename: str):
     file_path = FRONTEND_DIR / filename
     if file_path.is_file():
