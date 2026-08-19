@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MindCraft - Train your mind to think aloud under pressure.">
+  <title>MindCraft</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="grain-overlay"></div>
+
+  <div class="app-shell">
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- SCREEN 1: HOME                                      -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section id="screen-home" class="screen is-active">
+      <div class="home-layout">
+        <div class="home-hero">
+          <h1 class="hero-title">MindCraft</h1>
+        </div>
+
+        <div class="home-controls reveal-fade" style="--delay: 0.55s">
+
+          <!-- Segmented Control -->
+          <div class="segment-control">
+            <button class="seg-btn active" data-tab="quickfire">
+              <span class="seg-icon">🧠</span> Quickfire
+            </button>
+            <button class="seg-btn" data-tab="investigate">
+              <span class="seg-icon">🔍</span> Investigate
+            </button>
+          </div>
+
+          <!-- Dropdown that dynamically changes -->
+          <div class="select-wrapper">
+            <button class="select-btn" id="select-btn" type="button">
+              <span class="sel-icon" id="sel-icon">💼</span>
+              <span class="sel-name" id="sel-name">Business</span>
+              <span class="sel-desc" id="sel-desc">Startups, economics, and corporate strategy</span>
+              <span class="sel-arrow">▾</span>
+            </button>
+            <div class="select-dropdown hidden" id="select-dropdown">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Action row: SPIN button on left, Settings gear on right -->
+          <div class="home-actions-row">
+            <button class="spin-btn" id="btn-spin" type="button">
+              <span class="spin-btn-text">SPIN</span>
+              <span class="spin-btn-icon">⟳</span>
+            </button>
+            <button class="settings-btn" id="btn-settings" type="button" aria-label="Settings" title="Settings">
+              <svg class="settings-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="creator-badge">
+            <span class="creator-label">made by</span>
+            <a href="https://instagram.com/krishna__vudugula" target="_blank" class="creator-pill">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="insta-icon"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              @krishna__vudugula
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Settings Modal & Overlay -->
+      <div class="settings-overlay hidden" id="settings-overlay"></div>
+      <div class="settings-modal hidden" id="settings-modal" role="dialog" aria-labelledby="settings-title">
+        <div class="settings-modal-header">
+          <h3 class="settings-title" id="settings-title">Settings</h3>
+          <p class="settings-subtitle">Timer lengths in whole minutes.</p>
+        </div>
+        <div class="settings-modal-body">
+          <div class="settings-group">
+            <div class="settings-label-row">
+              <span class="settings-label">SPEECH</span>
+              <span class="settings-val" id="speech-val">3 min</span>
+            </div>
+            <input type="range" class="settings-range" id="speech-range" min="1" max="10" value="3" step="1">
+            <div class="settings-range-labels">
+              <span>1 min</span>
+              <span>10 min</span>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <div class="settings-label-row">
+              <span class="settings-label">RESEARCH</span>
+              <span class="settings-val" id="research-val">5 min</span>
+            </div>
+            <input type="range" class="settings-range" id="research-range" min="1" max="60" value="5" step="1">
+            <div class="settings-range-labels">
+              <span>1 min</span>
+              <span>60 min</span>
+            </div>
+          </div>
+        </div>
+        <div class="settings-modal-footer">
+          <button class="cta-begin" id="btn-settings-done" type="button">Done</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- SCREEN 2: SPIN + TOPIC REVEAL                       -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section id="screen-topic" class="screen">
+      <div class="spin-layout">
+
+        <!-- The cycling text area -->
+        <p class="spin-mode-label" id="spin-mode-label">THINK</p>
+        <h2 class="spin-text" id="spin-text">...</h2>
+        <div class="spin-underline" id="spin-underline"></div>
+
+        <!-- Topic reveal card (hidden until spin finishes) -->
+        <div class="topic-reveal hidden" id="topic-reveal">
+          <div class="topic-badge">
+            <span class="badge-dot"></span>
+            <span class="badge-text">READY</span>
+          </div>
+
+          <div class="topic-card-wrapper">
+            <div class="topic-card" id="topic-card">
+              <div class="card-header">
+                <span class="card-session" id="card-session">SESSION 001</span>
+                <span class="card-cat" id="card-category">PSYCHOLOGY · CONCEPT</span>
+              </div>
+              <h2 class="card-title" id="card-title">Loading...</h2>
+              <p class="card-hint" id="card-hint">...</p>
+              <div class="card-footer">
+                <div class="difficulty-bar">
+                  <span class="diff-label">DIFFICULTY</span>
+                  <div class="diff-track">
+                    <div class="diff-fill" id="diff-fill" style="width: 50%"></div>
+                  </div>
+                </div>
+                <span class="card-type" id="card-type">CONCEPT</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="topic-instruction" id="topic-instruction">
+            Your brain has already started forming an explanation.
+          </p>
+
+          <button class="cta-begin" id="btn-start-research" type="button">
+            <span class="cta-text">Start Researching</span>
+            <span class="cta-arrow">→</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- SCREEN 3: RESEARCH                                  -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section id="screen-research" class="screen">
+      <div class="research-layout">
+        <p class="phase-label">RESEARCH PHASE</p>
+        <h2 class="research-topic" id="research-topic">Topic</h2>
+        <div class="timer-ring-wrapper">
+          <svg class="timer-ring" viewBox="0 0 200 200">
+            <circle class="ring-bg" cx="100" cy="100" r="90" />
+            <circle class="ring-progress" id="ring-progress" cx="100" cy="100" r="90" />
+          </svg>
+          <div class="timer-inner">
+            <span class="timer-digits" id="research-digits">05:00</span>
+            <span class="timer-sub">RESEARCH WINDOW</span>
+          </div>
+        </div>
+        <button class="cta-begin" id="btn-skip-research" type="button">
+          <span class="cta-text">I'm ready - Start Recording</span>
+          <span class="cta-arrow">→</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- SCREEN 4: RECORD                                    -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section id="screen-record" class="screen">
+      <div class="record-layout">
+        <span class="phase-label">RECORDING</span>
+        <h2 class="record-topic" id="record-topic">Topic</h2>
+        <div class="record-timer-bar">
+          <div class="record-timer-fill" id="record-timer-fill"></div>
+        </div>
+        <span class="record-digits" id="record-digits">03:00</span>
+        <div class="rec-indicator">
+          <span class="rec-dot"></span>
+          <span class="rec-text">● REC</span>
+        </div>
+        <button class="cta-finish" id="btn-stop-record" type="button">
+          <span class="finish-icon">◼</span>
+          <span>Stop Recording</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- SCREEN 5: PLAYBACK                                  -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section id="screen-playback" class="screen">
+      <div class="playback-layout">
+        <p class="phase-label">SESSION COMPLETE</p>
+        <h2 class="playback-topic" id="playback-topic">Topic</h2>
+        <div class="audio-player-wrapper">
+          <audio id="audio-player" class="audio-player" controls></audio>
+        </div>
+        <div class="playback-actions">
+          <button class="cta-begin" id="btn-download" type="button">
+            <span class="cta-text">Download Recording</span>
+            <span class="cta-arrow">↓</span>
+          </button>
+          <button class="spin-btn" id="btn-spin-again" type="button">
+            <span class="spin-btn-text">Spin Again</span>
+            <span class="spin-btn-icon">⟳</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
