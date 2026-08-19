@@ -19,11 +19,12 @@ app = FastAPI(title="MindCraft API")
 # Serve the frontend directory
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 
-@app.get("/")
-async def serve_index():
-    return FileResponse(FRONTEND_DIR / "index.html")
+if FRONTEND_DIR.is_dir():
+    @app.get("/")
+    async def serve_index():
+        return FileResponse(FRONTEND_DIR / "index.html")
 
-app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+    app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
 app.add_middleware(
     CORSMiddleware,
@@ -141,10 +142,11 @@ You must return a raw JSON object (and nothing else) with exactly these fields:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
-# Catch-all: serve frontend files by name (style.css, app.js, etc.)
-@app.get("/{filename:path}")
-async def serve_file(filename: str):
-    file_path = FRONTEND_DIR / filename
-    if file_path.is_file():
-        return FileResponse(file_path)
-    raise HTTPException(status_code=404, detail="Not found")
+if FRONTEND_DIR.is_dir():
+    # Catch-all: serve frontend files by name (style.css, app.js, etc.)
+    @app.get("/{filename:path}")
+    async def serve_file(filename: str):
+        file_path = FRONTEND_DIR / filename
+        if file_path.is_file():
+            return FileResponse(file_path)
+        raise HTTPException(status_code=404, detail="Not found")
